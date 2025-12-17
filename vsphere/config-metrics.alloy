@@ -1,0 +1,50 @@
+otelcol.receiver.vcenter "integrations_vsphere" {
+    endpoint = "https://<vcenter-hostname>:<vcenter-port>"
+    username = "<vcenter-user>"
+    password = "<vcenter-password>"
+
+    tls {
+        insecure = true
+    }
+
+    output {
+        metrics = [otelcol.processor.batch.integrations_vsphere.input]
+    }
+}
+
+otelcol.processor.batch "integrations_vsphere" {
+    output {
+        metrics = [otelcol.processor.transform.integrations_vsphere.input]
+    }
+}
+
+otelcol.processor.transform "integrations_vsphere" {
+    error_mode = "ignore"
+
+    metric_statements {
+        context = "resource"
+        statements = [
+            `set(attributes["job"], "integrations/vsphere") where attributes["job"] == nil`,
+        ]
+    }
+
+    output {
+        metrics = [otelcol.exporter.prometheus.integrations_vsphere.input]
+    }
+}
+
+otelcol.exporter.prometheus "integrations_vsphere" {
+    forward_to = [prometheus.relabel.integrations_vsphere.receiver]
+
+    resource_to_telemetry_conversion = true
+}
+
+prometheus.relabel "integrations_vsphere" {
+    forward_to = [prometheus.remote_write.metrics_service.receiver]
+
+    rule {
+        source_labels = ["__name__"]
+        regex         = "up|vcenter_cluster_cpu_effective|vcenter_cluster_cpu_limit|vcenter_cluster_host_count|vcenter_cluster_memory_effective_bytes|vcenter_cluster_memory_limit_bytes|vcenter_cluster_vm_count|vcenter_cluster_vm_template_count|vcenter_datastore_disk_usage_bytes|vcenter_datastore_disk_utilization_percent|vcenter_host_cpu_usage_MHz|vcenter_host_cpu_utilization_percent|vcenter_host_disk_latency_avg_milliseconds|vcenter_host_disk_throughput|vcenter_host_memory_usage_mebibytes|vcenter_host_memory_utilization_percent|vcenter_host_network_packet_error_rate|vcenter_host_network_packet_rate|vcenter_host_network_throughput|vcenter_host_network_usage|vcenter_resource_pool_cpu_shares|vcenter_resource_pool_cpu_usage|vcenter_resource_pool_memory_shares|vcenter_resource_pool_memory_usage_mebibytes|vcenter_vm_cpu_usage_MHz|vcenter_vm_cpu_utilization_percent|vcenter_vm_disk_latency_avg_milliseconds|vcenter_vm_disk_throughput|vcenter_vm_disk_usage_bytes|vcenter_vm_disk_utilization_percent|vcenter_vm_memory_ballooned_mebibytes|vcenter_vm_memory_swapped_mebibytes|vcenter_vm_memory_usage_mebibytes|vcenter_vm_memory_utilization_percent|vcenter_vm_network_packet_drop_rate|vcenter_vm_network_packet_rate|vcenter_vm_network_throughput_bytes_per_sec|vcenter_vm_network_usage"
+        action        = "keep"
+    }
+}

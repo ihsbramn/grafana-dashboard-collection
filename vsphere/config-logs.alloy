@@ -1,0 +1,213 @@
+loki.source.syslog "integrations_vsphere" {
+    forward_to = [loki.process.integrations_vsphere_drop.receiver]
+
+    listener {
+        address = "<vcenter-host>:<vcenter-syslog-port>"
+        protocol = "tcp"
+        use_rfc5424_message = true
+        labels = {
+            job = "integrations/vsphere",
+        }
+    }
+}
+
+loki.process "integrations_vsphere_drop" {
+    forward_to = [loki.process.integrations_vsphere_labels.receiver]
+
+    stage.regex {
+        expression = "^<\\S+>\\S* \\d+-\\d+-\\d+T\\d+:\\d+:\\d+\\.\\d+Z (?<instance>\\S+) (?<log_type>\\S+) .*$"
+    }
+
+    stage.labels {
+        values = {
+            log_type = "",
+            instance = "",
+        }
+    }
+
+    stage.match {
+        selector = "{log_type=~\".+\", log_type!=\"vpxd-main\", log_type!=\"vpxd-svcs-main\", log_type!=\"analytics\", log_type!=\"applmgmt\"}"
+        action = "drop"
+
+        drop_counter_reason = "vsphere_non_priority_logs"
+    }
+}
+
+loki.process "integrations_vsphere_labels" {
+    forward_to = [loki.write.grafana_cloud_loki.receiver]
+
+    stage.match {
+        selector = "{log_type=\"vpxd-main\"}"
+
+        stage.regex {
+            expression = "^.*vpxd-main \\S+ \\S+ \\S+ \\d+-\\d+-\\d+T\\d+:\\d+:\\d+\\.\\d+Z (?<level>\\w+)\\s+.*$"
+        }
+
+        stage.labels {
+            values = {
+                level = "",
+            }
+        }
+    }
+
+    stage.match {
+        selector = "{log_type=\"vpxd-svcs-main\"}"
+
+        stage.regex {
+            expression = "^.*vpxd-svcs-main \\S+ \\S+ \\S+ \\d+-\\d+-\\d+T\\d+:\\d+:\\d+\\.\\d+Z \\[\\S+ \\[\\S*\\] (?<level>\\w+)\\s+.*$"
+        }
+
+        stage.labels {
+            values = {
+                level = "",
+            }
+        }
+    }
+
+    stage.match {
+        selector = "{log_type=\"applmgmt\"}"
+
+        stage.regex {
+            expression = "^.+applmgmt \\S+ \\S+ \\S+ \\d+-\\d+-\\d+T\\d+:\\d+:\\d+ \\S+ \\S+ \\[\\S+\\](?<level>\\w+):.*$"
+        }
+
+        stage.labels {
+            values = {
+                level = "",
+            }
+        }
+    }
+
+    stage.match {
+        selector = "{log_type=\"analytics\"}"
+
+        stage.regex {
+            expression = "^.*analytics \\S+ \\S+ \\S+ \\d+-\\d+-\\d+T\\d+:\\d+:\\d+\\.\\d+Z \\S+\\s+(?<level>\\w+)\\s+.*$"
+        }
+
+        stage.labels {
+            values = {
+                level = "",
+            }
+        }
+    }
+
+    stage.template {
+        source = "level"
+        template = "{{ ToLower .Value }}"
+    }
+
+    stage.labels {
+        values = {
+            "level" = "",
+        }
+    }
+}
+
+
+// NOTE: The following configuration is for systems where Alloy will read syslog from a file.
+// loki.source.file "integrations_vsphere" {
+//     targets = [{__path__ = <path/to/syslog_file.log>}]
+
+//     forward_to = [loki.process.integrations_vsphere_drop.receiver]
+// }
+
+
+// loki.process "integrations_vsphere_drop" {
+//     forward_to = [loki.process.integrations_vsphere_labels.receiver]
+
+//     stage.regex {
+//         expression = "^\\S+\\s+\\d+ \\d{2}:\\d{2}:\\d{2} (?P<instance>\\S+) (?P<log_type>\\S+) .*$"
+//     }
+
+//     stage.static_labels {
+//         values = {
+//             job = "integrations/vsphere",
+//         }
+//     }
+
+//     stage.labels {
+//         values = {
+//             log_type = "",
+//             instance = "",
+//         }
+//     }
+
+//     stage.match {
+//         selector = "{log_type=~\".+\", log_type!=\"vpxd-main\", log_type!=\"vpxd-svcs-main\", log_type!=\"analytics\", log_type!=\"applmgmt\"}"
+//         action = "drop"
+
+//         drop_counter_reason = "vsphere_non_priority_logs"
+//     }
+// }
+
+// loki.process "integrations_vsphere_labels" {
+//     forward_to = [loki.write.grafana_cloud_loki.receiver]
+
+//     stage.match {
+//         selector = "{log_type=\"vpxd-main\"}"
+
+//         stage.regex {
+//             expression = "^.*vpxd-main \\S+ (?P<level>\\w+) .*$"
+//         }
+
+//         stage.labels {
+//             values = {
+//                 level = "",
+//             }
+//         }
+//     }
+
+//     stage.match {
+//         selector = "{log_type=\"vpxd-svcs-main\"}"
+
+//         stage.regex {
+//             expression = "^.*vpxd-svcs-main \\S+ \\S+ \\[\\S*] (?P<level>\\w+) .*$"
+//         }
+
+//         stage.labels {
+//             values = {
+//                 level = "",
+//             }
+//         }
+//     }
+
+//     stage.match {
+//         selector = "{log_type=\"applmgmt\"}"
+
+//         stage.regex {
+//             expression = "^.+applmgmt \\d+-\\d+-\\S+ \\S+ \\S+ \\[\\S+\\](?P<level>\\w+):.*$"
+//         }
+
+//         stage.labels {
+//             values = {
+//                 level = "",
+//             }
+//         }
+//     }
+
+//     stage.match {
+//         selector = "{log_type=\"analytics\"}"
+
+//         stage.regex {
+//             expression = "^.*analytics \\S+ \\S+  (?P<level>\\w+).*$"
+//         }
+
+//         stage.labels {
+//             values = {
+//                 level = "",
+//             }
+//         }
+//     }
+
+//     stage.template {
+//         source = "level"
+//         template = "{{ ToLower .Value }}"
+//     }
+
+//     stage.labels {
+//         values = {
+//             "level" = "",
+//         }
+//     }
+// }

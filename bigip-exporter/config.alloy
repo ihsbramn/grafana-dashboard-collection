@@ -1,0 +1,17 @@
+prometheus.scrape "metrics_integrations_integrations_f5_bigip" {
+	targets = [{
+		__address__ = "<your-node-hostname>:9142",
+	}]
+	forward_to = [prometheus.relabel.metrics_integrations_integrations_f5_bigip.receiver]
+	job_name   = "integrations/f5-bigip"
+}
+
+prometheus.relabel "metrics_integrations_integrations_f5_bigip" {
+	forward_to = [prometheus.remote_write.metrics_service.receiver]
+
+	rule {
+		source_labels = ["__name__"]
+		regex         = "up|bigip_node_cur_sessions|bigip_node_serverside_bytes_in|bigip_node_serverside_bytes_out|bigip_node_serverside_cur_conns|bigip_node_serverside_max_conns|bigip_node_serverside_pkts_in|bigip_node_serverside_pkts_out|bigip_node_status_availability_state|bigip_node_tot_requests|bigip_pool_active_member_cnt|bigip_pool_connq_depth|bigip_pool_connq_serviced|bigip_pool_min_active_members|bigip_pool_serverside_bytes_in|bigip_pool_serverside_bytes_out|bigip_pool_serverside_cur_conns|bigip_pool_serverside_max_conns|bigip_pool_serverside_pkts_out|bigip_pool_status_availability_state|bigip_pool_tot_requests|bigip_vs_clientside_bytes_in|bigip_vs_clientside_bytes_out|bigip_vs_clientside_cur_conns|bigip_vs_clientside_evicted_conns|bigip_vs_clientside_max_conns|bigip_vs_clientside_pkts_in|bigip_vs_clientside_pkts_out|bigip_vs_cs_mean_conn_dur|bigip_vs_ephemeral_bytes_in|bigip_vs_ephemeral_bytes_out|bigip_vs_ephemeral_cur_conns|bigip_vs_ephemeral_evicted_conns|bigip_vs_ephemeral_max_conns|bigip_vs_ephemeral_pkts_in|bigip_vs_ephemeral_pkts_out|bigip_vs_status_availability_state|bigip_vs_tot_requests"
+		action        = "keep"
+	}
+}

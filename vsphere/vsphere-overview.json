@@ -1,0 +1,2348 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 1641362351529984,
+  "links": [
+    {
+      "keepTime": true,
+      "title": "vSphere logs",
+      "type": "link",
+      "url": "/d/vsphere-logs"
+    },
+    {
+      "includeVars": true,
+      "keepTime": true,
+      "title": "vSphere clusters",
+      "type": "link",
+      "url": "/d/vsphere-clusters"
+    },
+    {
+      "includeVars": true,
+      "keepTime": true,
+      "title": "vSphere hosts",
+      "type": "link",
+      "url": "/d/vsphere-hosts"
+    },
+    {
+      "includeVars": true,
+      "keepTime": true,
+      "title": "vSphere virtual machines",
+      "type": "link",
+      "url": "/d/vsphere-virtual-machines"
+    }
+  ],
+  "panels": [
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "description": "Shows if metrics are being received for the selected time range.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "color": "light-red",
+                  "index": 0,
+                  "text": "No metrics received - Check configuration"
+                }
+              },
+              "type": "special"
+            },
+            {
+              "options": {
+                "from": 0,
+                "result": {
+                  "color": "light-red",
+                  "index": 1,
+                  "text": "Failed to collect metrics"
+                },
+                "to": 0
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 1,
+                "result": {
+                  "color": "light-green",
+                  "index": 2,
+                  "text": "Receiving metrics"
+                },
+                "to": 1000000
+              },
+              "type": "range"
+            }
+          ],
+          "noValue": "No data",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "string"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 27,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.0-20160616057",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$prometheus_datasource"
+          },
+          "expr": "sum without(vcenter_cluster_name, vcenter_datacenter_name, vcenter_host_name) (vcenter_host_memory_usage_mebibytes{job=~\"$job\"}) > bool 0\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Metrics",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "description": "Shows the timestamp of the latest metrics received for this integration in the last 24 hours.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "noValue": "No data",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "dateTimeFromNow"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "id": 28,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "Time",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.0-20160616057",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$prometheus_datasource"
+          },
+          "expr": "sum without(vcenter_cluster_name, vcenter_datacenter_name, vcenter_host_name) (vcenter_host_memory_usage_mebibytes{job=~\"$job\"}) > bool 0\n",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": "now-24h",
+      "title": "Latest metrics received",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Mixed --"
+      },
+      "description": "Shows the installed version of this integration.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "noValue": "1.0.2",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "string"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "id": 29,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.0-20160616057",
+      "targets": [
+        {
+          "refId": "A"
+        }
+      ],
+      "title": "Integration version",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "The number of clusters in the datacenter.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 2
+      },
+      "id": 1,
+      "options": {
+        "colorMode": "fixed",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.0-20160616057",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "count(count by(vcenter_cluster_name) (vcenter_cluster_vm_count{job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"}))",
+          "refId": "A"
+        }
+      ],
+      "title": "Clusters",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "The number of ESXi hosts in the datacenter.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 2
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "fixed",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.0-20160616057",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "count(count by(vcenter_host_name) (vcenter_host_memory_usage_mebibytes{job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"}))",
+          "refId": "A"
+        }
+      ],
+      "title": "ESXi hosts",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "The number of resource pools in the datacenter.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 2
+      },
+      "id": 3,
+      "options": {
+        "colorMode": "fixed",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.0-20160616057",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "count(count by(vcenter_resource_pool_inventory_path) (vcenter_resource_pool_cpu_shares{job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"}))",
+          "refId": "A"
+        }
+      ],
+      "title": "Resource pools",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "The number of virtual machines in the datacenter.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 2
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "fixed",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.0-20160616057",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "count(count by(vcenter_resource_pool_inventory_path, vcenter_virtual_app_inventory_path, vcenter_vm_name) (vcenter_vm_memory_usage_mebibytes{job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"}))",
+          "refId": "A"
+        }
+      ],
+      "title": "VMs",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "The number of virtual machines currently powered on that belong to a cluster in the datacenter.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 6
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "fixed",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.0-20160616057",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "sum by (job, vcenter_datacenter_name) (vcenter_cluster_vm_count{power_state=\"on\", job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"})",
+          "refId": "A"
+        }
+      ],
+      "title": "Clustered VMs on",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "The number of virtual machines currently powered off that belong to a cluster in the datacenter.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 6
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "fixed",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.0-20160616057",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "sum by (job, vcenter_datacenter_name) (vcenter_cluster_vm_count{power_state=\"off\", job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"})",
+          "refId": "A"
+        }
+      ],
+      "title": "Clustered VMs off",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "The number of virtual machines currently in a suspended state that belong to a cluster in the datacenter.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 6
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "fixed",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.0-20160616057",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "sum by (job, vcenter_datacenter_name) (vcenter_cluster_vm_count{power_state=\"suspended\", job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"})",
+          "refId": "A"
+        }
+      ],
+      "title": "Clustered VMs suspended",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "The number of virtual machine templates that belong to a cluster in the datacenter.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 6
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "fixed",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.0-20160616057",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "sum by (job, vcenter_datacenter_name) (vcenter_cluster_vm_template_count{job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"})",
+          "refId": "A"
+        }
+      ],
+      "title": "Clustered VM templates",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "The number of ESXi hosts that are currently running (responding and not in maintenance mode) that belong to a cluster within the datacenter.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 16,
+        "y": 6
+      },
+      "id": 9,
+      "options": {
+        "colorMode": "fixed",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.0-20160616057",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "sum by (job, vcenter_datacenter_name) (vcenter_cluster_host_count{effective=\"true\", job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"})",
+          "refId": "A"
+        }
+      ],
+      "title": "Clustered active ESXi hosts",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "The number of ESXi hosts that are currently not running (not responding or in maintenance mode) that belong to a cluster within the datacenter.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 6
+      },
+      "id": 10,
+      "options": {
+        "colorMode": "fixed",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.4.0-20160616057",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "sum by (job, vcenter_datacenter_name) (vcenter_cluster_host_count{effective=\"false\", job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"})",
+          "refId": "A"
+        }
+      ],
+      "title": "Clustered inactive ESXi hosts",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 10
+      },
+      "id": 11,
+      "panels": [],
+      "title": "Clusters",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "The clusters with the highest CPU utilization percentage in the datacenter.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-BlYlRd"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 30,
+            "gradientMode": "scheme",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 1,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 0,
+        "y": 11
+      },
+      "id": 12,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.4.0-20160616057",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "topk ($top_resource_count, (100 * sum by (job, vcenter_datacenter_name, vcenter_cluster_name) (vcenter_host_cpu_usage_MHz{vcenter_cluster_name!=\"\",job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"}) / clamp_min(vcenter_cluster_cpu_limit{job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"},1)))",
+          "legendFormat": "{{vcenter_cluster_name}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Top CPU utilization by cluster",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "The clusters with the highest memory utilization percentage in the datacenter.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-BlYlRd"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 30,
+            "gradientMode": "scheme",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 1,
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 12,
+        "y": 11
+      },
+      "id": 13,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.4.0-20160616057",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "topk ($top_resource_count, (104857600 * sum by (job, vcenter_datacenter_name, vcenter_cluster_name) (vcenter_host_memory_usage_mebibytes{vcenter_cluster_name!=\"\",job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"}) / clamp_min(vcenter_cluster_memory_limit_bytes{job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"},1)))",
+          "legendFormat": "{{vcenter_cluster_name}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Top memory utilization by cluster",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "Information about the clusters in the vCenter environment.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "noValue": "NA",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cluster"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "",
+                    "url": "d/vsphere-clusters?var-datasource=${datasource}&${__all_variables}&var-vcenter_cluster_name=${__value.raw}&${__url_time_range}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "custom.width",
+                "value": 140
+              },
+              {
+                "id": "unit",
+                "value": "rotmhz"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU utilization"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "custom.width",
+                "value": 157
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-BlPu"
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "max",
+                "value": 100
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "custom.width",
+                "value": 140
+              },
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory utilization"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "custom.width",
+                "value": 157
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-BlPu"
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "max",
+                "value": 100
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Active ESXi"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Inactive ESXi"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "VMs on"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "VMs off"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "VMs suspended"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "custom.width",
+                "value": 140
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "id": 14,
+      "options": {
+        "cellHeight": "sm",
+        "showHeader": true
+      },
+      "pluginVersion": "12.4.0-20160616057",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "vcenter_cluster_cpu_limit{job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"}",
+          "format": "table",
+          "legendFormat": "{{vcenter_cluster_name}}",
+          "range": true,
+          "refId": "total_cpu"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "topk ($top_resource_count, (100 * sum by (job, vcenter_datacenter_name, vcenter_cluster_name) (vcenter_host_cpu_usage_MHz{vcenter_cluster_name!=\"\",job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"}) / clamp_min(vcenter_cluster_cpu_limit{job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"},1)))",
+          "format": "table",
+          "legendFormat": "{{vcenter_cluster_name}}",
+          "range": true,
+          "refId": "cpu_utilization"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "vcenter_cluster_memory_limit_bytes{job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"}",
+          "format": "table",
+          "legendFormat": "{{vcenter_cluster_name}}",
+          "range": true,
+          "refId": "total_memory"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "topk ($top_resource_count, (104857600 * sum by (job, vcenter_datacenter_name, vcenter_cluster_name) (vcenter_host_memory_usage_mebibytes{vcenter_cluster_name!=\"\",job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"}) / clamp_min(vcenter_cluster_memory_limit_bytes{job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"},1)))",
+          "format": "table",
+          "legendFormat": "{{vcenter_cluster_name}}",
+          "range": true,
+          "refId": "memory_utilization"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "vcenter_cluster_host_count{effective=\"true\", job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"}",
+          "format": "table",
+          "range": true,
+          "refId": "hosts_active"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "vcenter_cluster_host_count{effective=\"false\", job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"}",
+          "format": "table",
+          "range": true,
+          "refId": "hosts_inactive"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "vcenter_cluster_vm_count{power_state=\"on\", job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"}",
+          "format": "table",
+          "range": true,
+          "refId": "vms_on"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "vcenter_cluster_vm_count{power_state=\"off\", job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"}",
+          "format": "table",
+          "range": true,
+          "refId": "vms_off"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "vcenter_cluster_vm_count{power_state=\"suspended\", job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"}",
+          "format": "table",
+          "range": true,
+          "refId": "vms_suspended"
+        }
+      ],
+      "title": "Clusters table",
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "vcenter_cluster_name",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "vcenter_cluster_name",
+                "Value #total_cpu",
+                "Value #cpu_utilization",
+                "Value #total_memory",
+                "Value #memory_utilization",
+                "Value #hosts_active",
+                "Value #hosts_inactive",
+                "Value #vms_on",
+                "Value #vms_off",
+                "Value #vms_suspended",
+                "vcenter_datacenter_name 1"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "Value #cpu_utilization": 3,
+              "Value #hosts_active": 6,
+              "Value #hosts_inactive": 7,
+              "Value #memory_utilization": 5,
+              "Value #total_cpu": 2,
+              "Value #total_memory": 4,
+              "Value #vms_off": 9,
+              "Value #vms_on": 8,
+              "Value #vms_suspended": 10,
+              "vcenter_cluster_name": 1,
+              "vcenter_datacenter_name 1": 0
+            },
+            "renameByName": {
+              "Value #cpu_utilization": "CPU utilization",
+              "Value #hosts_active": "Active ESXi",
+              "Value #hosts_inactive": "Inactive ESXi",
+              "Value #memory_utilization": "Memory utilization",
+              "Value #total_cpu": "CPU",
+              "Value #total_memory": "Memory",
+              "Value #vms_off": "VMs off",
+              "Value #vms_on": "VMs on",
+              "Value #vms_suspended": "VMs suspended",
+              "vcenter_cluster_name": "Cluster",
+              "vcenter_datacenter_name 1": "Datacenter"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 23
+      },
+      "id": 15,
+      "panels": [],
+      "title": "Resource pools",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "The resource pools with the highest CPU usage in the datacenter.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 30,
+            "gradientMode": "opacity",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "showPoints": "never"
+          },
+          "unit": "rotmhz"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 24
+      },
+      "id": 16,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "v11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "topk ($top_resource_count, vcenter_resource_pool_cpu_usage{job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"})",
+          "legendFormat": "{{vcenter_resource_pool_inventory_path}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Top CPU usage by resource pools",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "The resource pools with the highest memory usage in the datacenter.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 30,
+            "gradientMode": "opacity",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "showPoints": "never"
+          },
+          "unit": "mbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 24
+      },
+      "id": 17,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "v11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "topk ($top_resource_count, vcenter_resource_pool_memory_usage_mebibytes{job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"})",
+          "legendFormat": "{{vcenter_resource_pool_inventory_path}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Top memory usage by resource pools",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "The resource pools with the highest amount of CPU shares allocated in the datacenter.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 30,
+            "gradientMode": "opacity",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "showPoints": "never"
+          },
+          "unit": "shares"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 32
+      },
+      "id": 18,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "v11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "topk ($top_resource_count, vcenter_resource_pool_cpu_shares{job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"})",
+          "legendFormat": "{{vcenter_resource_pool_inventory_path}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Top CPU shares by resource pools",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "The resource pools with the highest amount of memory shares allocated in the datacenter.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 30,
+            "gradientMode": "opacity",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "showPoints": "never"
+          },
+          "unit": "shares"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 32
+      },
+      "id": 19,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "v11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "topk ($top_resource_count, vcenter_resource_pool_memory_shares{job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"})",
+          "legendFormat": "{{vcenter_resource_pool_inventory_path}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Top memory shares by resource pools",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 40
+      },
+      "id": 20,
+      "panels": [],
+      "title": "ESXi hosts",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "The ESXi hosts with the highest CPU utilization in the datacenter.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-BlYlRd"
+          },
+          "custom": {
+            "fillOpacity": 30,
+            "gradientMode": "scheme",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "showPoints": "never"
+          },
+          "decimals": 1,
+          "max": 100,
+          "min": 0,
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 41
+      },
+      "id": 21,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "v11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "topk ($top_resource_count, vcenter_host_cpu_utilization_percent{job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"})",
+          "legendFormat": "{{vcenter_host_name}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Top CPU utilization by ESXi hosts",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "The ESXi hosts with the highest memory utilization in the datacenter.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 30,
+            "gradientMode": "opacity",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "showPoints": "never"
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 41
+      },
+      "id": 22,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "v11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "topk ($top_resource_count, vcenter_host_memory_utilization_percent{job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"})",
+          "legendFormat": "{{vcenter_host_name}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Top memory utilization by ESXi hosts",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "The ESXi hosts with the highest average disk latency in the datacenter.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 30,
+            "gradientMode": "opacity",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "showPoints": "never"
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 49
+      },
+      "id": 23,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "v11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "topk ($top_resource_count, sum by (job, vcenter_datacenter_name, vcenter_cluster_name, vcenter_host_name) (vcenter_host_disk_latency_avg_milliseconds{job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"}))",
+          "legendFormat": "{{vcenter_host_name}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Top avg disk latency by ESXi hosts",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "The ESXi hosts with the highest percentage of packet errors in the datacenter.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "fillOpacity": 30,
+            "gradientMode": "opacity",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "showPoints": "never"
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 49
+      },
+      "id": 24,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "v11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "topk ($top_resource_count, sum by (job, vcenter_datacenter_name, vcenter_cluster_name, vcenter_host_name) (vcenter_host_network_packet_error_rate{object=\"\",job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"}) / clamp_min(sum by (job, vcenter_datacenter_name, vcenter_cluster_name, vcenter_host_name) (vcenter_host_network_packet_rate{object=\"\",job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"}), 1))",
+          "legendFormat": "{{vcenter_host_name}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Top packet errors by ESXi hosts",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 57
+      },
+      "id": 25,
+      "panels": [],
+      "title": "Datastores",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${prometheus_datasource}"
+      },
+      "description": "Information about the datastores in the vCenter environment.",
+      "fieldConfig": {
+        "defaults": {
+          "noValue": "NA"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Disk total"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "min.width",
+                "value": 140
+              },
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Disk utilization"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "min.width",
+                "value": 157
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "continuous-BlPu"
+                }
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "max",
+                "value": 100
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Disk free"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "min.width",
+                "value": 140
+              },
+              {
+                "id": "unit",
+                "value": "bytes"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 58
+      },
+      "id": 26,
+      "options": {},
+      "pluginVersion": "v11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "sum by (job, vcenter_datacenter_name, vcenter_datastore_name) (vcenter_datastore_disk_usage_bytes{job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"})",
+          "format": "table",
+          "range": true,
+          "refId": "disk_total"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "vcenter_datastore_disk_utilization_percent{job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"}",
+          "format": "table",
+          "range": true,
+          "refId": "disk_utilization"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${prometheus_datasource}"
+          },
+          "expr": "vcenter_datastore_disk_usage_bytes{disk_state=\"available\",job=~\"$job\",vcenter_datacenter_name=~\"$vcenter_datacenter_name\"}",
+          "format": "table",
+          "range": true,
+          "refId": "disk_available"
+        }
+      ],
+      "title": "Datastores table",
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "vcenter_datastore_name",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "vcenter_datacenter_name 1",
+                "vcenter_datastore_name",
+                "Value #disk_total",
+                "Value #disk_utilization",
+                "Value #disk_available"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "Value #disk_available": 4,
+              "Value #disk_total": 2,
+              "Value #disk_utilization": 3,
+              "vcenter_datacenter_name 1": 0,
+              "vcenter_datastore_name": 1
+            },
+            "renameByName": {
+              "Value #disk_available": "Disk free",
+              "Value #disk_total": "Disk total",
+              "Value #disk_utilization": "Disk utilization",
+              "vcenter_datacenter_name 1": "Datacenter",
+              "vcenter_datastore_name": "Datastore"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "refresh": "30s",
+  "schemaVersion": 42,
+  "tags": [
+    "vsphere-integration"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "grafanacloud-ihsbramnlab-prom",
+          "value": "grafanacloud-prom"
+        },
+        "label": "Data source",
+        "name": "prometheus_datasource",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "(?!grafanacloud-usage|grafanacloud-ml-metrics).+",
+        "type": "datasource"
+      },
+      {
+        "allValue": ".+",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${prometheus_datasource}"
+        },
+        "includeAll": true,
+        "label": "Job",
+        "multi": true,
+        "name": "job",
+        "options": [],
+        "query": "label_values(vcenter_vm_memory_usage_mebibytes{job=~\"integrations/vsphere\"}, job)",
+        "refresh": 2,
+        "regexApplyTo": "value",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".+",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${prometheus_datasource}"
+        },
+        "includeAll": true,
+        "label": "Datacenter",
+        "multi": true,
+        "name": "vcenter_datacenter_name",
+        "options": [],
+        "query": "label_values(vcenter_vm_memory_usage_mebibytes{job=~\"integrations/vsphere\",job=~\"$job\"}, vcenter_datacenter_name)",
+        "refresh": 2,
+        "regexApplyTo": "value",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "2",
+          "value": "2"
+        },
+        "description": "This variable allows for modification of top resource value.",
+        "label": "Top resource count",
+        "name": "top_resource_count",
+        "options": [],
+        "query": "2 : 2,4 : 4,6 : 6,8 : 8,10 : 10",
+        "type": "custom"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "default",
+  "title": "vSphere overview",
+  "uid": "vsphere-overview",
+  "version": 1,
+  "weekStart": ""
+}
